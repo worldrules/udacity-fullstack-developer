@@ -1,1 +1,2 @@
-web: python entertainment_center.py $PORT
+release: python entertainment_center.py
+web: python entertainment_center.py
