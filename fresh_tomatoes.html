@@ -1,9 +1,4 @@
-import webbrowser
-import os
-import re
 
-# Styles and scripting for the page
-main_page_head = '''
 <head>
     <meta charset="utf-8">
     <title>Leonardo Nunes Carvalho</title>
@@ -43,10 +38,7 @@ main_page_head = '''
         });
     </script>
 </head>
-'''
 
-# The main page layout and title bar
-main_page_content = '''
 <!DOCTYPE html>
 <html lang="en">
   <body class="backgroundAnimal">
@@ -65,49 +57,37 @@ main_page_content = '''
     
     <!-- Main Page Content -->
       <div class="container">
-      {movie_tiles}
+      
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="R_VX0e0PX90" data-toggle="modal" data-target="#trailer">
+    <img src="https://statics.livrariacultura.net.br/products/capas_lg/498/15013498.jpg" width="220" height="342">
+    <h2 class="movieTitle">A Origem</h2>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="sGbxmsDFVnE" data-toggle="modal" data-target="#trailer">
+    <img src="https://http2.mlstatic.com/quadro-posters-filme-star-wars-o-despertar-da-forca-moldura-D_NQ_NP_873311-MLB20544990466_012016-F.webp" width="220" height="342">
+    <h2 class="movieTitle">Star Wars</h2>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="zCy5WQ9S4c0" data-toggle="modal" data-target="#trailer">
+    <img src="https://http2.mlstatic.com/poster-peq-imp-couche-a3-do-filme-titanic-3d-verso-2-D_NQ_NP_13913-MLB235316376_6609-F.webp" width="220" height="342">
+    <h2 class="movieTitle">Titanic</h2>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="FJuaAWrgoUY" data-toggle="modal" data-target="#trailer">
+    <img src="https://upload.wikimedia.org/wikipedia/pt/4/4c/Enemy_cartaz.jpg" width="220" height="342">
+    <h2 class="movieTitle">Enemy</h2>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="IeM5qJp2v8Y" data-toggle="modal" data-target="#trailer">
+    <img src="https://media.fstatic.com/TeHZ3-q4O1YWxP9C2pB5eJCDF8c=/fit-in/290x478/smart/media/movies/covers/2015/07/room_t98036.jpeg" width="220" height="342">
+    <h2 class="movieTitle">ROOM</h2>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="S-1QgOMQ-ls" data-toggle="modal" data-target="#trailer">
+    <img src="http://br.web.img3.acsta.net/r_1920_1080/medias/nmedia/18/87/06/15/19871623.jpg" width="220" height="342">
+    <h2 class="movieTitle">SAW</h2>
+</div>
+
     </div>
   </body>
 </html>
-'''
-
-# A single movie entry html template
-movie_tile_content = '''
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer">
-    <img src="{poster_image_url}" width="220" height="342">
-    <h2 class="movieTitle">{movie_title}</h2>
-</div>
-'''
-
-
-def create_movie_tiles_content(movies):
-    # The HTML content for this section of the page
-    content = ''
-    for movie in movies:
-        youtube_id_match = re.search(r'(?<=v=)[^&#]+', movie.trailer_youtube)
-        youtube_id_match = youtube_id_match or re.search(r'(?<=be/)[^&#]+', movie.trailer_youtube)  # noqa
-        trailer_youtube_id = youtube_id_match.group(0) if youtube_id_match else None  # noqa
-
-        # Append the tile for the movie with its content filled in
-        content += movie_tile_content.format(
-            movie_title=movie.title,
-            poster_image_url=movie.poster_image_url,
-            trailer_youtube_id=trailer_youtube_id
-        )
-    return content
-
-
-def open_movies_page(movies):
-    # Create or overwrite the output file
-    output_file = open('fresh_tomatoes.html', 'w')
-
-    # Replace the placeholder for the movie tiles with the actual dynamically generated content  # noqa
-    rendered_content = main_page_content.format(movie_tiles=create_movie_tiles_content(movies))  # noqa
-
-    # Output the file
-    output_file.write(main_page_head + rendered_content)
-    output_file.close()
-
-    # open the output file in the browser
-    url = os.path.abspath(output_file.name)
-    webbrowser.open('file://' + url, new=2)  # open in a new tab, if possible
